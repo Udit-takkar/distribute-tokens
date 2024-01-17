@@ -9,9 +9,8 @@ import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
-  title: "Solidity Next.js Starter",
-  description:
-    "A starter kit for building full stack Ethereum dApps with Solidity and Next.js",
+  title: "Distribute tokens",
+  description: "Distribute tokens to Hats wearers using 0xsplits",
 };
 
 export default function RootLayout({

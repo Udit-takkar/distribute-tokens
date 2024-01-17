@@ -3,11 +3,12 @@
 import { ReactNode } from "react";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { hardhat, goerli } from "wagmi/chains";
+import { hardhat, goerli, sepolia } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 
-const chain = process.env.NEXT_PUBLIC_CHAIN_ID === "5" ? goerli : hardhat;
+const chain = process.env.NEXT_PUBLIC_CHAIN_ID === "5" ? goerli : sepolia;
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [chain],
   [
@@ -15,10 +16,10 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
       apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? "",
     }),
     publicProvider(),
-  ],
+  ]
 );
 const { connectors } = getDefaultWallets({
-  appName: "Solidity Next.js Starter",
+  appName: "Distribute Tokens",
   projectId: process.env.NEXT_PUBLIC_RAINBOWKIT_PROJECT_ID ?? "",
   chains,
 });
