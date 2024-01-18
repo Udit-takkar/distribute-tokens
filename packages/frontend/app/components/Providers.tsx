@@ -3,7 +3,7 @@
 import { ReactNode } from "react";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { hardhat, goerli, sepolia } from "wagmi/chains";
+import { goerli, sepolia } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 

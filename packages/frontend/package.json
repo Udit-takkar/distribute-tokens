@@ -13,7 +13,9 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@0xsplits/splits-kit": "^0.2.0",
     "@0xsplits/splits-sdk": "^3.2.3",
+    "@0xsplits/splits-sdk-react": "^1.2.3",
     "@apollo/client": "^3.8.9",
     "@apollo/experimental-nextjs-app-support": "^0.6.0",
     "@radix-ui/react-slot": "^1.0.2",

@@ -7,6 +7,11 @@ import { Providers } from "./components/Providers";
 import { Header } from "./components/Header";
 import { ToastContainer } from "react-toastify";
 import { ApolloWrapper } from "@/lib/apollo-provider";
+// import { SplitsProvider } from "@0xsplits/splits-sdk-react";
+
+// const splitsConfig = {
+//   chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID ?? "11155111"),
+// };
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -25,7 +30,6 @@ export default function RootLayout({
         <Providers>
           <ApolloWrapper>
             <Header />
-
             {children}
           </ApolloWrapper>
         </Providers>
