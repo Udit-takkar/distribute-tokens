@@ -4,13 +4,14 @@ import {
   NextSSRApolloClient,
 } from "@apollo/experimental-nextjs-app-support/ssr";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
-import { SEPOLIA_GRAPH_URL } from "@/lib/constants";
+import { SEPOLIA_GRAPH_URL, GOERLI_GRAPH_URL } from "@/lib/constants";
 
 export const { getClient } = registerApolloClient(() => {
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
     link: new HttpLink({
-      uri: SEPOLIA_GRAPH_URL,
+      // uri: SEPOLIA_GRAPH_URL,
+      uri: GOERLI_GRAPH_URL,
     }),
   });
 });

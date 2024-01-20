@@ -7,11 +7,12 @@ import {
   SSRMultipartLink,
   NextSSRApolloClient,
 } from "@apollo/experimental-nextjs-app-support/ssr";
-import { SEPOLIA_GRAPH_URL } from "@/lib/constants";
+import { SEPOLIA_GRAPH_URL, GOERLI_GRAPH_URL } from "@/lib/constants";
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: SEPOLIA_GRAPH_URL,
+    // uri: SEPOLIA_GRAPH_URL,
+    uri: GOERLI_GRAPH_URL,
   });
 
   return new NextSSRApolloClient({
