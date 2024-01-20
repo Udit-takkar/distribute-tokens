@@ -6,7 +6,6 @@ import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { goerli, sepolia } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-// import { SplitsProvider } from "@0xsplits/splits-sdk-react";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN_ID === "5" ? goerli : sepolia;
 
@@ -30,11 +29,6 @@ const config = createConfig({
   publicClient,
   webSocketPublicClient,
 });
-
-// const splitsConfig = {
-//   publicClient,
-//   chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID ?? "11155111"),
-// };
 
 const Providers = ({ children }: { children: ReactNode }) => (
   <WagmiConfig config={config}>

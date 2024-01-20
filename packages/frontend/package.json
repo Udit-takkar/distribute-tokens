@@ -18,6 +18,7 @@
     "@0xsplits/splits-sdk-react": "^1.2.3",
     "@apollo/client": "^3.8.9",
     "@apollo/experimental-nextjs-app-support": "^0.6.0",
+    "@hatsprotocol/sdk-v1-core": "^0.8.1",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
     "@rainbow-me/rainbowkit": "^1.0.11",

@@ -6,11 +6,14 @@ import { SplitsClient } from "@0xsplits/splits-sdk";
 
 import { useLazyQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
+import Image from 'next/image'
+
 
 import { gql } from "@apollo/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useWalletClient, usePublicClient } from "wagmi";
+import { HatsClient } from "@hatsprotocol/sdk-v1-core";
 
 const query = gql`
   query GetHatWearers($hatId: String) {
@@ -34,10 +37,13 @@ const query = gql`
 
 const TOKEN_ADDRESS = "0xdD69DB25F6D620A7baD3023c5d32761D353D3De9";
 
+const chainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID ?? "11155111");
+
 export default function Page() {
   const [getHatWearers, { data, loading, error }] = useLazyQuery(query);
   const [hatId, setHatId] = useState("");
   const [wearers, setWearers] = useState<string[]>([]);
+  const [hat,setHat]=useState<undefined | Awaited<ReturnType<HatsClient["viewHat"]>> >()
 
   const [splitAddress, setSplitAddress] = useState<undefined | string>();
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +57,13 @@ export default function Page() {
   >([]);
 
   const splitsClient = new SplitsClient({
-    chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID ?? "11155111"),
+    chainId,
+    publicClient: client,
+    walletClient: walletClientRes.data ?? undefined,
+  });
+
+  const hatsClient = new HatsClient({
+    chainId,
     publicClient: client,
     walletClient: walletClientRes.data ?? undefined,
   });
@@ -77,6 +89,11 @@ export default function Page() {
         throw new Error("No wallet connected");
 
       setIsLoading(true);
+
+      // TODO: fix type error
+      const hat = await hatsClient.viewHat(hatId);
+      setHat(hat)
+
       const res = await getHatWearers({
         variables: {
           hatId: hatId,
@@ -86,14 +103,26 @@ export default function Page() {
       const wearersAddresses = res.data.hat.wearers.map(
         (wearer: { id: string }) => wearer.id
       );
+      const actualWearersAddresses: string[] = [];
 
-      console.log("wearersAddresses", wearersAddresses);
+      for (const wearer of wearersAddresses) {
+        const isWearer = await hatsClient.isWearerOfHat({
+          // TODO: fix type error
+          hatId: hatId,
+          wearer,
+        });
+        if(isWearer){
+          actualWearersAddresses.push(wearer);
+        }
+      }
 
-      const totalWearers = wearersAddresses.length;
+      console.log("wearersAddresses", actualWearersAddresses);
+
+      const totalWearers = actualWearersAddresses.length;
       const equalPercentageAllocation = 100 / totalWearers;
 
       const args = {
-        recipients: wearersAddresses.map((wearer: string) => {
+        recipients: actualWearersAddresses.map((wearer: string) => {
           return {
             address: wearer,
             percentAllocation: equalPercentageAllocation,
@@ -109,7 +138,7 @@ export default function Page() {
       setSplitAddress(response.splitAddress);
       console.log("splitsClient.createSplit", response);
 
-      setWearers(wearersAddresses);
+      setWearers(actualWearersAddresses);
     } catch (err) {
       console.log("something went wrong", err);
     }
@@ -155,6 +184,12 @@ export default function Page() {
         </div>
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error.message}</p>}
+        {/* {hat?.imageUri && 
+          <div>
+            <h2 className="font-bold text-xl tracking-tight mt-8">Hat Details: {hat.details}</h2>
+            <Image alt="hat"  src={hat.imageUri} width={32} height={32} className="w-8 h-8 object-contain" />
+          </div>
+        } */}
         {recipients.length > 0 && (
           <div>
             <h2 className="font-bold text-4xl tracking-tight mt-8">
